@@ -60,3 +60,9 @@ Opened own life quote card, selected Sea, launched native Share image and chose 
 Ran saved-state update through Xcode. Absurdly Human still Following after relaunch, and Wilde quote displayed disabled Kept in library checkmark. Moments → Followed channels previewed Wilde then the editors’ original joke. Unfollow changed Following to Follow; selecting followed channels again showed the empty guidance instead of a stale quote. Unsaved Moments preferences reset to persisted settings on tab re-entry; recorded separately as a draft-usability concern.
 
 Read all three Quiet Chapter quotes with book/source attribution, followed that serious collection, and Home accessibility content included From your channels plus Emerson, Thoreau and Austen quotes. Existing saved Wilde copy remained independent of unfollowing. Channels raised to 8/10. This verifies bundled editorial channels; real reader/community service remains deferred and below 8.
+
+## Quiet-hours DST control fix
+
+Reproduced the actual prior time-control conversion with Foundation and America/New_York: midnight + nine elapsed hours displayed 10:00 on 8 March 2026 and 08:00 on 1 November 2026. The stored preference was 09:00, so the time control was misleading on both transition dates. Replaced elapsed-second conversion with a calendar wall-clock construction shared through MomentPlanner.localTime. The planner already used calendar wall times.
+
+New regression checks 09:00 and 20:15 on spring/fall transition dates, including correct day/hour/minute. All 14 core tests pass and unsigned iPhone build succeeds. This establishes conversion correctness and compilation; native picker setting/permission/pending queue/delivery checks remain open. Reminder score stays 6/10.

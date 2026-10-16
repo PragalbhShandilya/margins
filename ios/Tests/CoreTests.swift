@@ -31,6 +31,19 @@ final class CoreTests: XCTestCase {
     XCTAssertTrue(state.searching("route", kind: .movies, favorites: true).isEmpty)
     XCTAssertEqual(state.quotes, [older, newer], "Searching must not reorder the stored collection")
   }
+  func testQuietHoursControlsKeepWallTimeAcrossDSTChanges() throws {
+    var calendar = Calendar(identifier: .gregorian)
+    calendar.timeZone = try XCTUnwrap(TimeZone(identifier: "America/New_York"))
+    for (month, day) in [(3, 8), (11, 1)] {
+      let date = try XCTUnwrap(calendar.date(from: DateComponents(year: 2026, month: month, day: day, hour: 12)))
+      for minute in [9 * 60, 20 * 60 + 15] {
+        let displayed = MomentPlanner.localTime(minutes: minute, on: date, calendar: calendar)
+        XCTAssertEqual(calendar.component(.hour, from: displayed), minute / 60)
+        XCTAssertEqual(calendar.component(.minute, from: displayed), minute % 60)
+        XCTAssertTrue(calendar.isDate(displayed, inSameDayAs: date))
+      }
+    }
+  }
   func testStableSingleSelection() throws {
     var s = CollectionState()
     let q = try Quote(text: "Remember")

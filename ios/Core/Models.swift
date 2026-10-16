@@ -187,6 +187,10 @@ public struct PlannedMoment: Equatable, Sendable {
   public var quote: Quote
 }
 public enum MomentPlanner {
+  public static func localTime(minutes: Int, on day: Date = .now, calendar: Calendar = .current) -> Date {
+    calendar.date(bySettingHour: minutes / 60, minute: minutes % 60, second: 0, of: day) ?? day
+  }
+
   public static func plan(
     preferences: ReminderPreferences, quotes: [Quote], now: Date = .now,
     calendar: Calendar = .current, random: () -> Double = { Double.random(in: 0..<1) }

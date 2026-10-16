@@ -12,8 +12,7 @@ struct MomentsScreen: View {
   private func timeBinding(start: Bool) -> Binding<Date> {
     Binding(
       get: {
-        Calendar.current.startOfDay(for: .now).addingTimeInterval(
-          Double(start ? preferences.startMinute : preferences.endMinute) * 60)
+        MomentPlanner.localTime(minutes: start ? preferences.startMinute : preferences.endMinute)
       },
       set: { d in
         let parts = Calendar.current.dateComponents([.hour, .minute], from: d)
