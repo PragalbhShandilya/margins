@@ -14,7 +14,7 @@
 | Card design / personal photos | 6 | Implementation compiles; runtime photo, long-text and image rendering pending. |
 | Image/text sharing | 5 | Native share implementation; actual export/share acceptance pending. |
 | Random moments / quiet hours | 7 | Frequency 3 saved while paused; native permission Allow then enabled Save reported 60 scheduled requests through 5 November. Pause disabled the switch and retained design. Missing single-quote selection rejected. 14 core tests cover quiet hours and DST conversion; app-closed delivery/denial and updated picker acceptance pending. |
-| App-closed notifications / tap routing | 5 | Native local notification implementation; actual delivery, pause and correct tap target pending. |
+| App-closed notifications / tap routing | 7 | Actual random notification delivered to simulator Notification Center while Margins was off-screen. Wilde text/author matched a saved quote; pending count fell 60 to 59 on return. Pause restored off state. Tap routing and real physical-device acceptance remain pending. |
 | Backup / merge / web migration | 7 | Core roundtrip, merge, malformed input and web migration tests pass; file-picker/export runtime pending. |
 | Persistence / corruption recovery | 6 | Edited quote, attribution and favorite survived a rebuilt app relaunch. Corruption/recovery runtime pending. |
 | Accounts / sign-in / Keychain | 4 | Client prepared; hosted service and runtime account/Keychain checks deferred by owner. |
@@ -72,3 +72,9 @@ New regression checks 09:00 and 20:15 on spring/fall transition dates, including
 Device Hub changed frequency from 1 to 3 and saved with switch off: status became Moments are paused. Your design is kept. Enabled and saved; native notification permission prompt appeared, Allow completed and app reported 60 moments planned through 5 Nov 2026. LibraryStore configure awaits UNUserNotificationCenter.add for each request before reporting success; this is queue-submission evidence, not observed OS delivery. Pause changed the switch to off and retained the design.
 
 Selected One special quote with no specific quote, enabled and saved: visible alert rejected it with Add a quote or follow a channel before enabling moments. Prior valid schedule had already been paused; no new schedule created. Reminder setup raised to 7/10; actual background delivery/tap and denial acceptance remain open. Runtime used the prior built app; DST helper change has core/build evidence and still awaits rebuilt UI inspection.
+
+## Actual background notification delivery
+
+Configured three daily moments with My library, Forest and a valid 06:19–20:23 local window at approximately 20:20. Scheduling completed with 60 requests. Sent Margins to background via simulator Home and verified Home Screen. After cutoff, Notification Center showed a Margins alert “A moment from Margins” with Wilde’s saved quote and author, timestamp approximately 20:22 (within the chosen window). No banner was observed, so only Notification Center arrival is claimed.
+
+Tapping/advertised View action did not visibly open the app during native automation; routing remains unverified, not classified as an app defect yet. Reopened Margins through Spotlight; app reported 59 pending moments, consistent with one delivered request. Paused reminders again and verified switch off/status paused. Background notifications/routing score raised from 5 to 7. Physical iPhone delivery, expanded image, tap routing and denial recovery still required for full acceptance. Native picker AX setValue did not alter selection; direct wheel row clicks worked, and final values were verified before saving.
