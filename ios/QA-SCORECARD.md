@@ -6,9 +6,9 @@
 |---|---:|---|
 | Add quotes and attribution | 7 | Device Hub created a book quote with author/context. Blank/length validation has core coverage; movie/life selection and keyboard-visible layout still needed. |
 | Edit quotes | 7 | Normal typing saved changed text and preserved attribution/favorite. Accessibility setValue alone changed UITextView display without updating the binding, so it is not valid input evidence. Editor title visibly truncated; shortened to New quote/Edit quote, rebuilt visual check passed. Edited text, attribution and favorite survived app replacement/relaunch. |
-| Favorites | 7 | Runtime heart changed to Remove favorite and stayed filled after editing. Favorite survived rebuilt relaunch; favorite filter acceptance pending. |
-| Remove / undo | 6 | Implemented; runtime confirmation, cancel and restore pending. |
-| Search / filters / sorting | 6 | Core tests pass; runtime combinations pending. |
+| Favorites | 8 | Runtime toggle, edit preservation and rebuilt relaunch passed. Favorites filter showed the quote; unfavoriting removed it immediately, then All retained the saved quote. |
+| Remove / undo | 8 | Runtime confirmation dismissed without loss; confirming removed only the disposable QA quote, count became zero, and Undo restored the edited text, author, context and category. |
+| Search / filters / sorting | 7 | Books excluded the life quote, From life included it, Favorites membership reacted immediately. Core tests pass; runtime search and multi-quote sorting pending. |
 | Rediscovery / keeping quotes | 7 | Native hero renders saved text and updates after edit. Shuffle and duplicate-save runtime acceptance pending. |
 | Serious/funny channels | 6 | Bundled collections and pool tests; follow/read/unfollow runtime acceptance pending. |
 | Card design / personal photos | 6 | Implementation compiles; runtime photo, long-text and image rendering pending. |
@@ -30,3 +30,9 @@ Created disposable quote `QA: Small steps make a good beginning.`, author `QA Re
 The first accessibility-setValue edit did not update the 38-character counter and did not persist; normal keyboard input updated the counter and saved. Do not classify this automation-only path as a confirmed user-facing save defect.
 
 No claim that all features meet 8/10. No paid hosting, backend deployment or physical phone installation performed.
+
+## Category, favorite and removal acceptance
+
+Changed the disposable book quote to From life through the native picker; saved row and hero both changed category. Library Books filter showed a contextual empty state, From life showed the quote, Favorites showed it, and unfavoriting removed it from Favorites without deleting it. Returned to All. Removal popover dismissed by tapping outside retained the quote; confirming Remove quote produced zero items and Undo removal restored its exact edited text, author, context and life category.
+
+Found the one-item count read “1 words kept” and counted quotes rather than words. Changed it to singular/plural “1 quote kept” / “N quotes kept”; unsigned iPhone rebuild succeeded. Xcode relaunched the simulator app; a later Device Hub reconnect timed out twice, so the revised count visual acceptance remains pending.

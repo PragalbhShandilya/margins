@@ -173,7 +173,7 @@ struct LibraryScreen: View {
           }
         }
         HStack {
-          Text("\(store.state.quotes.count) words kept").font(.caption).foregroundStyle(.secondary)
+          Text("\(store.state.quotes.count) \(store.state.quotes.count == 1 ? "quote" : "quotes") kept").font(.caption).foregroundStyle(.secondary)
           Spacer()
           Menu {
             Button("Newest first") { oldest = false }
