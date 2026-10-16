@@ -8,7 +8,7 @@
 | Edit quotes | 7 | Normal typing saved changed text and preserved attribution/favorite. Accessibility setValue alone changed UITextView display without updating the binding, so it is not valid input evidence. Editor title visibly truncated; shortened to New quote/Edit quote, rebuilt visual check passed. Edited text, attribution and favorite survived app replacement/relaunch. |
 | Favorites | 8 | Runtime toggle, edit preservation and rebuilt relaunch passed. Favorites filter showed the quote; unfavoriting removed it immediately, then All retained the saved quote. |
 | Remove / undo | 8 | Runtime confirmation dismissed without loss; confirming removed only the disposable QA quote, count became zero, and Undo restored the edited text, author, context and category. |
-| Search / filters / sorting | 7 | Books excluded the life quote, From life included it, Favorites membership reacted immediately. Core tests pass; runtime search and multi-quote sorting pending. |
+| Search / filters / sorting | 8 | Always-visible search verified on rebuilt iPhone app. Cross-field query matched, unmatched query showed empty state, Clear restored results. Movie/life category and favorite filters passed. Two distinct quotes reversed correctly with Newest first / Oldest first. 13 core tests cover constraints and chronology. |
 | Rediscovery / keeping quotes | 7 | Native hero renders saved text and updates after edit. Shuffle and duplicate-save runtime acceptance pending. |
 | Serious/funny channels | 6 | Bundled collections and pool tests; follow/read/unfollow runtime acceptance pending. |
 | Card design / personal photos | 6 | Implementation compiles; runtime photo, long-text and image rendering pending. |
@@ -42,3 +42,9 @@ Found the one-item count read “1 words kept” and counted quotes rather than 
 Device Hub reconnected after starting the stopped simulator. Opened installed Margins from Spotlight. Restored life quote remained present and Library showed the corrected “1 quote kept” label. Search was not visible in the default Library view and a pull-down attempt did not reveal it; changed searchable placement to an always-visible navigation-bar drawer. Rebuilt visual/search entry acceptance is still pending.
 
 13 portable core tests pass, including new explicit chronological sorting in both directions, mixed life/movie category and favorite constraints, cross-field case-insensitive whitespace/multiword matches, rejection of terms spread across separate quotes, and verification that search does not reorder stored data. This strengthens algorithm evidence without substituting for native search/sort interaction checks.
+
+## Rebuilt native search and sorting acceptance
+
+Opened the current Documents/Codex/Margins/ios project in Xcode and ran it on iPhone 18 Pro. Search field visibly appears without a reveal gesture. Initial interaction overlapped app replacement and briefly showed a blank display; Xcode continued running and app returned to Home. No Margins crash report was found. Retried after launch completed: ordinary typing `QA acceptance` retained the life quote across text/author/context; `nonexistent phrase` removed all results; Clear restored the quote. Closed search.
+
+Created a second disposable movie quote `QA: A newer movie quote for sorting.` with optional attribution omitted. Library count correctly showed `2 quotes kept`, newer movie first and earlier life second. Sort → Oldest first reversed those rows while retaining text and attribution. Search/filter/sorting raised to 8/10. Account and real notification gates remain open.
