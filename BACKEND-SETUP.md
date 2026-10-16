@@ -1,5 +1,7 @@
 # Connect the Margins community
 
+Deployment is deferred at the owner’s request. No backend service or paid hosting has been started. Before deploying later, merge the prepared notification reliability fixes and run the feature checks.
+
 The app remains available at https://pragalbhshandilya.github.io/margins/.
 
 The personal library, card designer, editorial channels and in-app moments work without an account. Shared reader accounts, follow feeds and notifications while the app is closed require the server included in this repository.
@@ -47,7 +49,7 @@ Take regular SQLite-consistent backups using SQLite's online backup tooling, or 
 - Profile name and bio, username and explicitly published quotes are public on the connected community server. Anyone with its address can read those public quotes.
 - Your whole library is not an account sync service. Use Export/Import to transfer private collections between devices.
 - Server-side reminders store a private snapshot of the selected quote pool. Save moments again to update it after changing your collection. Own uploaded photos are not uploaded to the server.
-- Signing out or disconnecting pauses this account's background reminders on **all devices**. Local in-app reminders are separate.
+- Signing out or disconnecting pauses this account's background reminders on **all devices**. The controls also pause local in-app reminders. If the server cannot confirm a stop request, the app keeps the connection and credentials for retry and warns that background reminders may continue. Pause removes the server subscriptions; use Enable device notifications to reconnect when resuming.
 - There is no email/password recovery yet. Keep the password in your password manager. An owner-run account recovery and abuse-moderation flow is required before opening registration to a wider public audience.
 
 ## Acceptance before declaring every feature 8/10

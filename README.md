@@ -12,7 +12,7 @@ Personal data is stored on the current device. Existing prototype collections mi
 
 ## Community and background moments
 
-A Node 24 + SQLite backend implements real accounts, explicitly published quotes, reader discovery, following and a shared feed. A durable Web Push scheduler handles random slots, timezones, quiet hours, retries and expired subscriptions. The backend is prepared and tested locally, **not yet deployed**. GitHub Pages serves the interface only.
+A Node 24 + SQLite backend implements real accounts, explicitly published quotes, reader discovery, following and a shared feed. A durable Web Push scheduler handles random slots, timezones, quiet hours, retries and expired subscriptions. The backend is prepared and tested locally, **not yet deployed**. The owner has deferred backend deployment. The latest readiness candidate has 37 passing checks, including offline sign-out and pause retries. GitHub Pages serves the interface only.
 
 Use [the setup guide](BACKEND-SETUP.md) to connect it. A Render Blueprint is included; deploying it creates paid resources, which the owner must review first. Device delivery still requires a real phone acceptance test. Account recovery and moderation remain pre-public-launch work.
 

@@ -1,7 +1,7 @@
 export const VERSION = 3;
 export const uid = () => globalThis.crypto.randomUUID();
 export const types = ['Books', 'Movies', 'Life'];
-export const blank = () => ({version:VERSION,quotes:[],following:[],profile:{name:'A reader',bio:''},moment:{enabled:false,source:'library',quoteId:'',mood:'forest',image:'',frequency:1,start:'09:00',end:'20:00',nextAt:null,lastAt:null}});
+export const blank = () => ({version:VERSION,quotes:[],following:[],profile:{name:'A reader',bio:''},moment:{enabled:false,source:'library',quoteId:'',mood:'forest',image:'',frequency:1,start:'09:00',end:'20:00',nextAt:null,lastAt:null,syncError:''}});
 export function cleanQuote(q, existing = {}) {
   if (!q || typeof q !== 'object') throw Error('This quote is not valid.');
   if(typeof q.text!=='string')throw Error('Write a quote as text.');
