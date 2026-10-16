@@ -1,0 +1,32 @@
+# Native iPhone feature scorecard
+
+16 October 2026. Goal remains open. Ratings use core behavior (4), usability (2), data safety/reliability (2), and end-to-end evidence (2). A missing essential service or unverified delivery keeps a feature below 8. Web ratings in the repository root do not automatically apply to this native app.
+
+| Feature | Current /10 | Evidence / remaining acceptance |
+|---|---:|---|
+| Add quotes and attribution | 7 | Device Hub created a book quote with author/context. Blank/length validation has core coverage; movie/life selection and keyboard-visible layout still needed. |
+| Edit quotes | 7 | Normal typing saved changed text and preserved attribution/favorite. Accessibility setValue alone changed UITextView display without updating the binding, so it is not valid input evidence. Editor title visibly truncated; shortened to New quote/Edit quote, rebuilt visual check passed. Edited text, attribution and favorite survived app replacement/relaunch. |
+| Favorites | 7 | Runtime heart changed to Remove favorite and stayed filled after editing. Favorite survived rebuilt relaunch; favorite filter acceptance pending. |
+| Remove / undo | 6 | Implemented; runtime confirmation, cancel and restore pending. |
+| Search / filters / sorting | 6 | Core tests pass; runtime combinations pending. |
+| Rediscovery / keeping quotes | 7 | Native hero renders saved text and updates after edit. Shuffle and duplicate-save runtime acceptance pending. |
+| Serious/funny channels | 6 | Bundled collections and pool tests; follow/read/unfollow runtime acceptance pending. |
+| Card design / personal photos | 6 | Implementation compiles; runtime photo, long-text and image rendering pending. |
+| Image/text sharing | 5 | Native share implementation; actual export/share acceptance pending. |
+| Random moments / quiet hours | 6 | Random slots, caps, quiet hours and DST core tests; runtime settings/permission/pending queue acceptance pending. |
+| App-closed notifications / tap routing | 5 | Native local notification implementation; actual delivery, pause and correct tap target pending. |
+| Backup / merge / web migration | 7 | Core roundtrip, merge, malformed input and web migration tests pass; file-picker/export runtime pending. |
+| Persistence / corruption recovery | 6 | Edited quote, attribution and favorite survived a rebuilt app relaunch. Corruption/recovery runtime pending. |
+| Accounts / sign-in / Keychain | 4 | Client prepared; hosted service and runtime account/Keychain checks deferred by owner. |
+| Following readers / shared feed | 4 | Client prepared; two-account hosted acceptance deferred by owner. |
+| Publish / unpublish | 4 | Client prepared; hosted ownership/lifecycle acceptance deferred by owner. |
+| Native design / navigation / accessibility | 7 | Home, Library, editor visually inspected on iPhone 18 Pro / iOS 27; native tab navigation works. Large text, VoiceOver, smaller phone and keyboard layout pending. |
+| Project/source delivery | 8 | Draft PR #2 contains editable Xcode project, shared scheme, setup and CI. Local iPhone build and 12 core tests passed; simulator launch verified via Xcode/Device Hub. |
+
+## Session evidence
+
+Created disposable quote `QA: Small steps make a good beginning.`, author `QA Reader`, context `Simulator acceptance`. Favorited it. Normal keyboard replacement to `QA: A verified edit, one word at a time.` saved successfully; hero and row both displayed the edited text, attribution and filled heart. No real personal quote was modified. Test quote remains in the isolated simulator for further persistence/delete acceptance.
+
+The first accessibility-setValue edit did not update the 38-character counter and did not persist; normal keyboard input updated the counter and saved. Do not classify this automation-only path as a confirmed user-facing save defect.
+
+No claim that all features meet 8/10. No paid hosting, backend deployment or physical phone installation performed.

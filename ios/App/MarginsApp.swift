@@ -273,7 +273,7 @@ struct QuoteEditor: View {
           }
         }
         if !error.isEmpty { Text(error).foregroundStyle(.red) }
-      }.navigationTitle(existing == nil ? "A word worth keeping" : "Keep the words just right")
+      }.navigationTitle(existing == nil ? "New quote" : "Edit quote")
         .navigationBarTitleDisplayMode(.inline).toolbar {
           ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
           ToolbarItem(placement: .confirmationAction) {
