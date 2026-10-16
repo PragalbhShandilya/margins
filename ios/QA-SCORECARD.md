@@ -10,7 +10,7 @@
 | Remove / undo | 8 | Runtime confirmation dismissed without loss; confirming removed only the disposable QA quote, count became zero, and Undo restored the edited text, author, context and category. |
 | Search / filters / sorting | 8 | Always-visible search verified on rebuilt iPhone app. Cross-field query matched, unmatched query showed empty state, Clear restored results. Movie/life category and favorite filters passed. Two distinct quotes reversed correctly with Newest first / Oldest first. 13 core tests cover constraints and chronology. |
 | Rediscovery / keeping quotes | 7 | Native hero renders saved text and updates after edit. Shuffle and duplicate-save runtime acceptance pending. |
-| Serious/funny channels | 6 | Bundled collections and pool tests; follow/read/unfollow runtime acceptance pending. |
+| Serious/funny channels | 8 | Funny channel follow survived rebuilt relaunch; read/keep/duplicate prevention and saved checkmark verified. Both quotes supplied Moments previews; unfollow removed the pool. Serious channel read/follow added all three quotes to Home. Core channel pool test passes. |
 | Card design / personal photos | 6 | Implementation compiles; runtime photo, long-text and image rendering pending. |
 | Image/text sharing | 5 | Native share implementation; actual export/share acceptance pending. |
 | Random moments / quiet hours | 6 | Random slots, caps, quiet hours and DST core tests; runtime settings/permission/pending queue acceptance pending. |
@@ -54,3 +54,9 @@ Created a second disposable movie quote `QA: A newer movie quote for sorting.` w
 Followed Absurdly Human in Device Hub; Follow changed to Following. Read both humorous quotes with explicit attribution/context. Kept Oscar Wilde twice; Library increased from two to three entries with only one Wilde quote and retained attribution. The save button provided no success state, so added a disabled “Kept in library” checkmark state for already-saved channel quotes; build and rebuilt runtime check follow. Channel remains below 8 pending unfollow, feed/reminder membership and persistence acceptance.
 
 Opened own life quote card, selected Sea, launched native Share image and chose Save to Files. The export picker showed a PNG image with the correct sea-colored card thumbnail. No export completion or external sharing is claimed; Files destination and full-size output acceptance are pending.
+
+## Channel acceptance completed
+
+Ran saved-state update through Xcode. Absurdly Human still Following after relaunch, and Wilde quote displayed disabled Kept in library checkmark. Moments → Followed channels previewed Wilde then the editors’ original joke. Unfollow changed Following to Follow; selecting followed channels again showed the empty guidance instead of a stale quote. Unsaved Moments preferences reset to persisted settings on tab re-entry; recorded separately as a draft-usability concern.
+
+Read all three Quiet Chapter quotes with book/source attribution, followed that serious collection, and Home accessibility content included From your channels plus Emerson, Thoreau and Austen quotes. Existing saved Wilde copy remained independent of unfollowing. Channels raised to 8/10. This verifies bundled editorial channels; real reader/community service remains deferred and below 8.
