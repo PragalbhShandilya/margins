@@ -13,7 +13,7 @@
 | Serious/funny channels | 8 | Funny channel follow survived rebuilt relaunch; read/keep/duplicate prevention and saved checkmark verified. Both quotes supplied Moments previews; unfollow removed the pool. Serious channel read/follow added all three quotes to Home. Core channel pool test passes. |
 | Card design / personal photos | 6 | Implementation compiles; runtime photo, long-text and image rendering pending. |
 | Image/text sharing | 5 | Native share implementation; actual export/share acceptance pending. |
-| Random moments / quiet hours | 6 | Random slots, caps, quiet hours and DST core tests; runtime settings/permission/pending queue acceptance pending. |
+| Random moments / quiet hours | 7 | Frequency 3 saved while paused; native permission Allow then enabled Save reported 60 scheduled requests through 5 November. Pause disabled the switch and retained design. Missing single-quote selection rejected. 14 core tests cover quiet hours and DST conversion; app-closed delivery/denial and updated picker acceptance pending. |
 | App-closed notifications / tap routing | 5 | Native local notification implementation; actual delivery, pause and correct tap target pending. |
 | Backup / merge / web migration | 7 | Core roundtrip, merge, malformed input and web migration tests pass; file-picker/export runtime pending. |
 | Persistence / corruption recovery | 6 | Edited quote, attribution and favorite survived a rebuilt app relaunch. Corruption/recovery runtime pending. |
@@ -66,3 +66,9 @@ Read all three Quiet Chapter quotes with book/source attribution, followed that 
 Reproduced the actual prior time-control conversion with Foundation and America/New_York: midnight + nine elapsed hours displayed 10:00 on 8 March 2026 and 08:00 on 1 November 2026. The stored preference was 09:00, so the time control was misleading on both transition dates. Replaced elapsed-second conversion with a calendar wall-clock construction shared through MomentPlanner.localTime. The planner already used calendar wall times.
 
 New regression checks 09:00 and 20:15 on spring/fall transition dates, including correct day/hour/minute. All 14 core tests pass and unsigned iPhone build succeeds. This establishes conversion correctness and compilation; native picker setting/permission/pending queue/delivery checks remain open. Reminder score stays 6/10.
+
+## Native reminder setup acceptance
+
+Device Hub changed frequency from 1 to 3 and saved with switch off: status became Moments are paused. Your design is kept. Enabled and saved; native notification permission prompt appeared, Allow completed and app reported 60 moments planned through 5 Nov 2026. LibraryStore configure awaits UNUserNotificationCenter.add for each request before reporting success; this is queue-submission evidence, not observed OS delivery. Pause changed the switch to off and retained the design.
+
+Selected One special quote with no specific quote, enabled and saved: visible alert rejected it with Add a quote or follow a channel before enabling moments. Prior valid schedule had already been paused; no new schedule created. Reminder setup raised to 7/10; actual background delivery/tap and denial acceptance remain open. Runtime used the prior built app; DST helper change has core/build evidence and still awaits rebuilt UI inspection.
