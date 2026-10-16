@@ -1,5 +1,5 @@
 const CACHE='margins-v3-1';
-const FILES=['./','./index.html','./app.mjs','./core.mjs','./storage.mjs','./channels.mjs','./style.css','./icon.svg','./manifest.webmanifest'];
+const FILES=['./','./index.html','./app.mjs','./core.mjs','./storage.mjs','./notifications.mjs','./channels.mjs','./style.css','./icon.svg','./manifest.webmanifest'];
 self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(FILES)))});
 self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('margins-')&&k!==CACHE).map(k=>caches.delete(k)))))});
 self.addEventListener('fetch',event=>{const url=new URL(event.request.url);if(event.request.method!=='GET'||url.origin!==self.location.origin||url.pathname.includes('/api/'))return;event.respondWith(fetch(event.request).then(response=>{if(response.ok){const copy=response.clone();caches.open(CACHE).then(c=>c.put(event.request,copy))}return response}).catch(()=>caches.match(event.request).then(r=>r||new Response('Margins is offline. Reconnect once to save this page.',{status:503,headers:{'Content-Type':'text/plain'}}))))});

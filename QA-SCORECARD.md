@@ -1,6 +1,6 @@
 # Margins feature scorecard
 
-Reviewed 16 October 2026. **Goal remains open:** every feature must reach at least 8/10 with evidence. Preparing a backend does not prove a deployed community or phone notifications.
+Reviewed 16 October 2026. Backend deployment is deferred at the owner’s request. The latest readiness fixes are saved separately for review; no backend service or paid hosting was started. **Goal remains open:** every feature must reach at least 8/10 with evidence. Preparing a backend does not prove a deployed community or phone notifications.
 
 [Open Margins](https://pragalbhshandilya.github.io/margins/) · [Finish backend setup](BACKEND-SETUP.md)
 
@@ -32,15 +32,18 @@ A product/engineering judgment, not a claim of formal certification: core behavi
 
 ### Automated
 
-`node --test tests/*.test.mjs` — **31 passed, 0 failed** on bundled Node 24.19.0. JavaScript syntax checks passed.
+`node --test tests/*.test.mjs` — **37 passed, 0 failed** on bundled Node 24.19.0. JavaScript syntax checks passed.
 
 - `tests/core.test.mjs`: quote validation, identity-preserving edits, legacy migration, malformed imports, combined search/filter, reminder validation, random planning, midnight/slot behavior, selected-quote regression, channel pools and deleted quote recovery.
 - `tests/storage.test.mjs`: real persistence adapter save/load, corruption quarantine, blocked storage, quota failure, migration persistence.
-- `tests/backend.test.mjs`: health/CORS, signup/signin/expiry, hashes, public quote lifecycle, ownership isolation, discovery/follow/feed, safe profile handling, push input protection, quiet hours, success/retry/expired-subscription delivery, signout revocation, timezone/DST planning, private-file protection. A real SQLite restart preserves accounts, sessions, quotes, follows, jobs and Web Push keys.
+- `tests/notifications.test.mjs`: delayed and failed remote sign-out, absent sessions, bounded service-worker readiness, and propagation of errors.
+- `tests/backend.test.mjs`: health/CORS, signup/signin/expiry, hashes, public quote lifecycle, ownership isolation, discovery/follow/feed, safe profile handling, push input protection, quiet hours, success/retry/expired-subscription delivery, signout revocation, timezone/DST planning, private-file protection. A real SQLite restart preserves accounts, sessions, quotes, follows, jobs and Web Push keys. The server serves every imported browser module needed for a hosted app.
 
 Push-sender tests prove server behavior, not actual OS notification delivery.
 
 ### Browser/manual
+
+- Additional readiness test: stopped the local backend while signed in. Sign-out retained credentials for retry and displayed failure. Pause displayed that server delivery was unconfirmed instead of claiming success. Restarted the backend; retrying Pause succeeded and cleared the warning; sign-out then received server confirmation. Reconnecting the same address preserved the existing sign-in.
 
 - Original live bug reproduced: changing a favorite reset the selected quote in Moments.
 - Revised local app: whitespace rejected; family quote created; context edited; favorite toggled; multiword search and no-results reset checked; quote removed/restored; movie quote created; source filter/sort checked.
@@ -51,7 +54,7 @@ Push-sender tests prove server behavior, not actual OS notification delivery.
 - Connected local backend; created test account; edited public profile; published a quote. A second local account published a quote; first account discovered/followed it and saw its feed entry.
 - Phone-width layout reviewed at 390×844; desktop navigation and modal flows exercised.
 
-## Remaining acceptance gates
+## Deferred acceptance gates (owner will deploy later)
 
 1. Deploy the prepared backend to an always-on HTTPS service with persistent storage using [the setup guide](BACKEND-SETUP.md). Review hosting cost before deployment.
 2. On two separate devices, connect that same backend, create accounts, publish intended quotes, and verify follow/unfollow/feed changes and private-quote exclusion.
