@@ -1,0 +1,25 @@
+# Creates a paid always-on web service and a persistent disk. Review cost in Render before deploying.
+services:
+  - type: web
+    name: margins-community
+    runtime: node
+    plan: 0.5c-512mb
+    buildCommand: npx --yes pnpm@11.25.0 install --frozen-lockfile --ignore-scripts
+    startCommand: node backend/server.mjs
+    healthCheckPath: /api/health
+    numInstances: 1
+    envVars:
+      - key: NODE_VERSION
+        value: 24.19.0
+      - key: DATABASE_PATH
+        value: /var/data/margins.sqlite
+      - key: ALLOWED_ORIGINS
+        value: https://pragalbhshandilya.github.io
+      - key: VAPID_SUBJECT
+        value: https://pragalbhshandilya.github.io/margins/
+      - key: TRUST_PROXY
+        value: "1"
+    disk:
+      name: margins-data
+      mountPath: /var/data
+      sizeGB: 1

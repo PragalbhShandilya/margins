@@ -1,0 +1,8 @@
+node_modules/
+.pnpm-store/
+data/
+*.sqlite*
+.env
+.env.*
+!.env.example
+work/

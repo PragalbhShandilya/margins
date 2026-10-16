@@ -1,19 +1,29 @@
 # Margins
 
-A warm, book-inspired home for quotes worth keeping.
+A warm, book-inspired home for words worth keeping.
 
-[Open the app](https://pragalbhshandilya.github.io/margins/)
+**[Open the app](https://pragalbhshandilya.github.io/margins/)** · [Feature scorecard](QA-SCORECARD.md) · [Connect the backend](BACKEND-SETUP.md)
 
-## Try it
+## Personal collection
 
-Save quotes from books, movies, friends and family; search and filter your collection; mark favorites; explore sample channels and people; and design image-based reminder cards.
+Add quotes from books, films, friends or family. Edit, favorite, search, sort and remove with undo. Explore serious and funny editorial channels; follow them for a personal feed and reminder choices. Design cards with a preset background or your own image and save them as PNGs. Plan random in-app moments inside your quiet hours. Export and import backups.
 
-This is a static browser prototype. Quotes, favorites, follows and reminder designs are stored on the current device in localStorage. Community profiles are samples, and background push notifications and shared accounts are not connected yet. Images load from Unsplash.
+Personal data is stored on the current device. Existing prototype collections migrate to stable quote IDs. Invalid stored data is preserved for recovery. Import merges rather than replacing existing quotes.
 
-## Run locally
+## Community and background moments
 
-Open index.html in a modern browser, or serve this directory with any static web server. No build or dependencies are required.
+A Node 24 + SQLite backend implements real accounts, explicitly published quotes, reader discovery, following and a shared feed. A durable Web Push scheduler handles random slots, timezones, quiet hours, retries and expired subscriptions. The backend is prepared and tested locally, **not yet deployed**. GitHub Pages serves the interface only.
 
-## Hosting
+Use [the setup guide](BACKEND-SETUP.md) to connect it. A Render Blueprint is included; deploying it creates paid resources, which the owner must review first. Device delivery still requires a real phone acceptance test. Account recovery and moderation remain pre-public-launch work.
 
-GitHub Pages publishes the repository root from the main branch. Changes to index.html are automatically deployed.
+## Development
+
+Open the app through an HTTP static server or run `node backend/server.mjs` after installing dependencies. No client build step is needed.
+
+```sh
+npx --yes pnpm@11.25.0 install --frozen-lockfile --ignore-scripts
+node --test tests/*.test.mjs
+node backend/server.mjs
+```
+
+GitHub Pages publishes from `main`. The feature-check workflow runs the Node test suite. Photos use Unsplash; imported images remain on the device. Curated quote attributions with uncertain provenance are explicitly marked.
