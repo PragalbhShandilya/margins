@@ -48,3 +48,9 @@ Device Hub reconnected after starting the stopped simulator. Opened installed Ma
 Opened the current Documents/Codex/Margins/ios project in Xcode and ran it on iPhone 18 Pro. Search field visibly appears without a reveal gesture. Initial interaction overlapped app replacement and briefly showed a blank display; Xcode continued running and app returned to Home. No Margins crash report was found. Retried after launch completed: ordinary typing `QA acceptance` retained the life quote across text/author/context; `nonexistent phrase` removed all results; Clear restored the quote. Closed search.
 
 Created a second disposable movie quote `QA: A newer movie quote for sorting.` with optional attribution omitted. Library count correctly showed `2 quotes kept`, newer movie first and earlier life second. Sort → Oldest first reversed those rows while retaining text and attribution. Search/filter/sorting raised to 8/10. Account and real notification gates remain open.
+
+## Channel and card sharing follow-up
+
+Followed Absurdly Human in Device Hub; Follow changed to Following. Read both humorous quotes with explicit attribution/context. Kept Oscar Wilde twice; Library increased from two to three entries with only one Wilde quote and retained attribution. The save button provided no success state, so added a disabled “Kept in library” checkmark state for already-saved channel quotes; build and rebuilt runtime check follow. Channel remains below 8 pending unfollow, feed/reminder membership and persistence acceptance.
+
+Opened own life quote card, selected Sea, launched native Share image and chose Save to Files. The export picker showed a PNG image with the correct sea-colored card thumbnail. No export completion or external sharing is claimed; Files destination and full-size output acceptance are pending.

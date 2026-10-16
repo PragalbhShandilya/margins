@@ -109,7 +109,10 @@ struct QuoteRow: View {
         if owned {
           Button("Edit") { edit?(quote) }
         } else {
-          Button("Keep quote", systemImage: "plus") { store.keep(quote) }
+          let kept = store.state.quotes.contains { $0.text == quote.text && $0.author == quote.author }
+          Button(kept ? "Kept in library" : "Keep quote", systemImage: kept ? "checkmark" : "plus") {
+            store.keep(quote)
+          }.disabled(kept)
         }
         Spacer()
         Button("Quote card", systemImage: "square.and.arrow.up") { share = true }
