@@ -16,6 +16,21 @@ final class CoreTests: XCTestCase {
     XCTAssertEqual(s.searching("MUM jacket", kind: .life, favorites: true).count, 1)
     XCTAssertTrue(s.searching("jacket", kind: .books, favorites: false).isEmpty)
   }
+  func testCrossFieldSearchAndChronologicalSorting() throws {
+    var state = CollectionState()
+    let older = try Quote(id: "older", text: "Take the scenic route", author: "Mum",
+      source: "Sunday walk", kind: .life, favorite: true, createdAt: Date(timeIntervalSince1970: 100))
+    let newer = try Quote(id: "newer", text: "The route home", author: "Film character",
+      source: "Evening film", kind: .movies, createdAt: Date(timeIntervalSince1970: 200))
+    state.quotes = [older, newer]
+    XCTAssertEqual(state.searching("  MUM\nSunday route  ", kind: .life, favorites: true).map(\.id), ["older"])
+    XCTAssertTrue(state.searching("Mum film", kind: nil, favorites: false).isEmpty)
+    XCTAssertEqual(state.searching("", kind: nil, favorites: false).map(\.id), ["newer", "older"])
+    XCTAssertEqual(state.searching("route", kind: nil, favorites: false, oldestFirst: true).map(\.id), ["older", "newer"])
+    XCTAssertEqual(state.searching("route", kind: .movies, favorites: false).map(\.id), ["newer"])
+    XCTAssertTrue(state.searching("route", kind: .movies, favorites: true).isEmpty)
+    XCTAssertEqual(state.quotes, [older, newer], "Searching must not reorder the stored collection")
+  }
   func testStableSingleSelection() throws {
     var s = CollectionState()
     let q = try Quote(text: "Remember")

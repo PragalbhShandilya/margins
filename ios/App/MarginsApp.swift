@@ -215,7 +215,7 @@ struct LibraryScreen: View {
           }.buttonStyle(.bordered)
         }
       }.padding(24)
-    }.background(Color.paper).searchable(text: $query, prompt: "A quote, person, or little context")
+    }.background(Color.paper).searchable(text: $query, placement: .navigationBarDrawer(displayMode: .always), prompt: "A quote, person, or little context")
       .toolbar {
         ToolbarItem(placement: .topBarLeading) { Button("Add", systemImage: "plus") { add = true } }
       }.sheet(isPresented: $add) { QuoteEditor() }.sheet(item: $editing) {

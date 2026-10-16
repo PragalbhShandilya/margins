@@ -36,3 +36,9 @@ No claim that all features meet 8/10. No paid hosting, backend deployment or phy
 Changed the disposable book quote to From life through the native picker; saved row and hero both changed category. Library Books filter showed a contextual empty state, From life showed the quote, Favorites showed it, and unfavoriting removed it from Favorites without deleting it. Returned to All. Removal popover dismissed by tapping outside retained the quote; confirming Remove quote produced zero items and Undo removal restored its exact edited text, author, context and life category.
 
 Found the one-item count read “1 words kept” and counted quotes rather than words. Changed it to singular/plural “1 quote kept” / “N quotes kept”; unsigned iPhone rebuild succeeded. Xcode relaunched the simulator app; a later Device Hub reconnect timed out twice, so the revised count visual acceptance remains pending.
+
+## Search, sorting and count follow-up
+
+Device Hub reconnected after starting the stopped simulator. Opened installed Margins from Spotlight. Restored life quote remained present and Library showed the corrected “1 quote kept” label. Search was not visible in the default Library view and a pull-down attempt did not reveal it; changed searchable placement to an always-visible navigation-bar drawer. Rebuilt visual/search entry acceptance is still pending.
+
+13 portable core tests pass, including new explicit chronological sorting in both directions, mixed life/movie category and favorite constraints, cross-field case-insensitive whitespace/multiword matches, rejection of terms spread across separate quotes, and verification that search does not reorder stored data. This strengthens algorithm evidence without substituting for native search/sort interaction checks.
