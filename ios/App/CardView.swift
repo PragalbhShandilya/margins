@@ -27,17 +27,6 @@ struct QuoteCard: View {
     }
   }
   var body: some View {
-    ZStack {
-      LinearGradient(colors: colors, startPoint: .topLeading, endPoint: .bottomTrailing)
-      if mood == .photo, let photo {
-        Image(uiImage: photo).resizable().scaledToFill().overlay(.black.opacity(0.45))
-      }
-      if mood != .photo {
-        Image(systemName: mood == .sea ? "water.waves" : "leaf").font(
-          .system(size: 230, weight: .ultraLight)
-        ).foregroundStyle(.white.opacity(0.07)).rotationEffect(.degrees(-25)).offset(x: 100, y: 80)
-          .accessibilityHidden(true)
-      }
       VStack(alignment: .leading, spacing: 20) {
         Label("A WORD TO KEEP", systemImage: "sparkle").font(
           .system(size: 10, weight: .medium, design: .rounded)
@@ -57,9 +46,27 @@ struct QuoteCard: View {
           Text(quote.kind.rawValue).font(.caption).opacity(0.65)
         }
       }.padding(28).foregroundStyle(.white)
-    }.frame(maxWidth: .infinity).frame(minHeight: compact ? 300 : 360).clipShape(
-      RoundedRectangle(cornerRadius: 18)
-    ).accessibilityElement(children: .combine)
+      .frame(maxWidth: .infinity).frame(minHeight: compact ? 300 : 360)
+      .background {
+        GeometryReader { geometry in
+          ZStack {
+            LinearGradient(colors: colors, startPoint: .topLeading, endPoint: .bottomTrailing)
+            if mood == .photo, let photo {
+              Image(uiImage: photo).resizable().scaledToFill()
+                .frame(width: geometry.size.width, height: geometry.size.height)
+                .clipped().overlay(.black.opacity(0.45))
+            }
+            if mood != .photo {
+              Image(systemName: mood == .sea ? "water.waves" : "leaf")
+                .font(.system(size: 230, weight: .ultraLight))
+                .foregroundStyle(.white.opacity(0.07)).rotationEffect(.degrees(-25))
+                .offset(x: 100, y: 80).accessibilityHidden(true)
+            }
+          }.frame(width: geometry.size.width, height: geometry.size.height).clipped()
+        }
+      }
+      .clipShape(RoundedRectangle(cornerRadius: 18))
+      .accessibilityElement(children: .combine)
   }
 }
 @MainActor enum CardRenderer {
