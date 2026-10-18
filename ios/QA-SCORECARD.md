@@ -15,7 +15,7 @@
 | Image/text sharing | 5 | Native share implementation; actual export/share acceptance pending. |
 | Random moments / quiet hours | 7 | Frequency 3 saved while paused; native permission Allow then enabled Save reported 60 scheduled requests through 5 November. Pause disabled the switch and retained design. Missing single-quote selection rejected. 14 core tests cover quiet hours and DST conversion; app-closed delivery/denial and updated picker acceptance pending. |
 | App-closed notifications / tap routing | 7 | Actual random notification delivered to simulator Notification Center while Margins was off-screen. Wilde text/author matched a saved quote; pending count fell 60 to 59 on return. Pause restored off state. Tap routing and real physical-device acceptance remain pending. |
-| Backup / merge / web migration | 7 | Core roundtrip, merge, malformed input and web migration tests pass. Fixed blank export sheet and verified JSON share sheet; completed Files save/import acceptance pending. |
+| Backup / merge / web migration | 8 | Native Files export/import, duplicate merge, missing-quote restore and photo replacement roundtrip pass. Failed collection-write regression preserves prior data; web migration core tests pass. |
 | Persistence / corruption recovery | 6 | Edited quote, attribution and favorite survived a rebuilt app relaunch. Corruption/recovery runtime pending. |
 | Accounts / sign-in / Keychain | 4 | Client prepared; hosted service and runtime account/Keychain checks deferred by owner. |
 | Following readers / shared feed | 4 | Client prepared; two-account hosted acceptance deferred by owner. |
@@ -104,3 +104,9 @@ Regression injects collection-write failure after photo staging and verifies ori
 ## Native personal-photo selection acceptance, 18 October
 
 Xcode rebuilt and launched the latest import-safety change on iPhone 18 Pro. Moments → Card background → My photo revealed Choose your own photo; native Photos picker showed six simulator sample images. Selected the flower sample. Preview visibly rendered that image with a dark overlay, complete Wilde quote, author and card footer. Save my moments with switch off reported Moments are paused. Your design is kept. No notification schedule was enabled. Personal-photo/card design rises from 6 to 7; long-text layouts and image export remain unverified. Photo backup roundtrip remains the next backup acceptance gate.
+
+## Photo backup roundtrip completed, 18 October
+
+Exported saved flower design through the native share sheet (JSON 4.3 MB), named Margins-flowers in Files, and saved without replacing the earlier text-only backup. Selected the waterfall sample instead; preview visibly changed to waterfall. Opened Import and merge backup, confirmed Recents listed Margins-flowers.json at 4.3 MB and the old 862-byte collection separately, then chose the flower backup. Alert reported zero new quotes, existing words kept and moments paused. Dismissed Settings: preview visibly returned to flowers with Wilde quote/author and footer intact. Together with prior missing-quote restore, duplicate merge, migration tests and failed-save protection, backup reaches 8/10.
+
+Found a separate card layout defect during this check: the waterfall preview shifted the overlay text right and clipped the category footer, unlike the flower image. Image aspect ratio appears to influence the ZStack layout. Card design stays 7 pending correction and rebuilt retest with both aspect ratios.
