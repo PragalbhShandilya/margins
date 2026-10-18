@@ -126,3 +126,7 @@ Reopened Margins from the simulator Home Screen and selected Share words on Wild
 ## Shared-word attribution improvement, 18 October
 
 Revalidated Device Hub: Mac remains locked and automatic unlock failed. Independent source review found Share words omitted quote.source, losing book/film/family context. Added Quote.shareText and routed ShareLink through it: complete quote plus available author/source, no fabricated Unknown attribution when both are absent. Regression covers full attribution, author-only, source-only, absent attribution and an untruncated long Unicode/multiline quote. All 16 portable tests pass and unsigned iPhone build succeeds. Native updated-share payload and long-card rendering remain pending; sharing stays 7.
+
+## Image-render failure handling, 18 October
+
+Source review found CardRenderer silently returned UIImage() when ImageRenderer failed. Replaced the empty-image fallback with a thrown user-readable error and a positive-dimension guard. CardSheet renders before presenting and carries the successful image in an identifiable payload; failure displays a local alert instead of an empty share. Reminder request construction propagates the error before pending requests are removed. Unsigned iPhone build succeeds. No actual render failure was reproduced; this is failure-path source hardening with build evidence, not runtime failure acceptance. Sharing stays 7 and current image/text/long-quote visual acceptance remains pending while Mac access is locked.

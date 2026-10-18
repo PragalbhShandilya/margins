@@ -70,12 +70,15 @@ struct QuoteCard: View {
   }
 }
 @MainActor enum CardRenderer {
-  static func image(quote: Quote, mood: CardMood, photo: UIImage?) -> UIImage {
+  static func image(quote: Quote, mood: CardMood, photo: UIImage?) throws -> UIImage {
     let renderer = ImageRenderer(
       content: QuoteCard(quote: quote, mood: mood, photo: photo).frame(width: 540, height: 675)
         .environment(\.colorScheme, .light))
     renderer.scale = 2
-    return renderer.uiImage ?? UIImage()
+    guard let image = renderer.uiImage, image.size.width > 0, image.size.height > 0 else {
+      throw AppIssue.message("This card could not be created. Please try sharing it again.")
+    }
+    return image
   }
 }
 struct ShareSheet: UIViewControllerRepresentable {
@@ -130,12 +133,17 @@ struct QuoteRow: View {
     .sheet(isPresented: $share) { CardSheet(quote: quote).environmentObject(store) }
   }
 }
+private struct RenderedCard: Identifiable {
+  let id = UUID()
+  let image: UIImage
+}
 struct CardSheet: View {
   @EnvironmentObject var store: LibraryStore
   @Environment(\.dismiss) var dismiss
   let quote: Quote
   @ViewState<CardMood> private var mood: CardMood = .forest
-  @ViewState<Bool> private var showingShare: Bool = false
+  @ViewState<RenderedCard?> private var imageShare: RenderedCard?
+  @ViewState<String> private var shareError = ""
   var body: some View {
     NavigationStack {
       ScrollView {
@@ -146,7 +154,12 @@ struct CardSheet: View {
               Text(m.rawValue).tag(m)
             }
           }.pickerStyle(.menu)
-          Button("Share image", systemImage: "square.and.arrow.up") { showingShare = true }
+          Button("Share image", systemImage: "square.and.arrow.up") {
+            do {
+              imageShare = RenderedCard(image: try CardRenderer.image(
+                quote: quote, mood: mood, photo: store.photo))
+            } catch { shareError = error.localizedDescription }
+          }
             .buttonStyle(.borderedProminent)
           ShareLink(item: quote.shareText) {
             Label("Share words", systemImage: "text.quote")
@@ -154,9 +167,13 @@ struct CardSheet: View {
         }.padding(24)
       }.background(Color.paper).navigationTitle("A word to carry").navigationBarTitleDisplayMode(
         .inline
-      ).toolbar { Button("Done") { dismiss() } }.sheet(isPresented: $showingShare) {
-        ShareSheet(items: [CardRenderer.image(quote: quote, mood: mood, photo: store.photo)])
-      }
+      ).toolbar { Button("Done") { dismiss() } }.sheet(item: $imageShare) { card in
+        ShareSheet(items: [card.image])
+      }.alert("Couldn’t share card", isPresented: Binding(
+        get: { !shareError.isEmpty }, set: { if !$0 { shareError = "" } }
+      )) {
+        Button("OK", role: .cancel) { shareError = "" }
+      } message: { Text(shareError) }
     }.onAppear { mood = store.state.reminders.mood }
   }
 }

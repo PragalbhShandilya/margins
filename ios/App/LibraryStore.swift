@@ -221,7 +221,7 @@ import UserNotifications
         content.threadIdentifier = "margins.words"
         let attachmentURL = folder.appending(
           path: "moment-\(plan.id.replacingOccurrences(of:".",with:"-" )).jpg")
-        let image = CardRenderer.image(quote: plan.quote, mood: requested.mood, photo: photo)
+        let image = try CardRenderer.image(quote: plan.quote, mood: requested.mood, photo: photo)
         if let jpeg = image.jpegData(compressionQuality: 0.65) {
           try jpeg.write(to: attachmentURL, options: .atomic)
           content.attachments = [
