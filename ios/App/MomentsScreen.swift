@@ -271,7 +271,7 @@ struct SettingsScreen: View {
         .fileImporter(isPresented: $importing, allowedContentTypes: [.json]) { result in
           do {
             let count = try store.importBackup(result.get())
-            status = "\(count) quotes imported. Your existing words were kept. Moments are paused."
+            status = "\(count) \(count == 1 ? "quote" : "quotes") imported. Your existing words were kept. Moments are paused."
           } catch { store.error = error.localizedDescription }
         }
         .alert("Margins", isPresented: Binding(
