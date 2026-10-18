@@ -86,3 +86,7 @@ Native Export collection previously opened a blank sheet on its first presentati
 ## Files export follow-up, 18 October
 
 Restarted iPhone 18 Pro in Device Hub and reopened Margins. Export again displayed a populated 862-byte JSON share sheet. Save to Files → On My iPhone → Save returned to Settings. Import and merge backup opened Recents and visibly listed Margins-collection.json, 862 bytes, with the current timestamp: the file save is verified. Selecting it returned to Settings, but no success/error confirmation was visible in the inspected state. Import outcome and collection contents require follow-up; rating remains 7.
+
+## Import confirmation and duplicate merge, 18 October
+
+Found import success status placed below the visible Settings sections. Replaced that status row with a native confirmation alert for successful import/profile saves. Import confirmation explicitly says Moments are paused. Unsigned iPhone build succeeded; Xcode rebuilt and ran on iPhone 18 Pro. Selected the saved 862-byte JSON in Files Recents. Native alert visibly reported “0 quotes imported. Your existing words were kept. Moments are paused.” Dismissed it and opened Library: exactly three quotes remained, with Wilde, movie QA, and life QA text/attribution intact. This verifies reimport duplicate suppression and preservation, not restoration of a missing quote or photo. Backup remains 7 pending those broader acceptance checks.

@@ -257,7 +257,6 @@ struct SettingsScreen: View {
         } header: {
           Text("Your community, later")
         }
-        if !status.isEmpty { Section { Text(status).font(.caption) } }
         Section {
           Text("Margins · iPhone edition").font(.system(.headline, design: .serif))
           Text("A little home for words worth keeping.").foregroundStyle(.secondary)
@@ -272,9 +271,15 @@ struct SettingsScreen: View {
         .fileImporter(isPresented: $importing, allowedContentTypes: [.json]) { result in
           do {
             let count = try store.importBackup(result.get())
-            status = "\(count) quotes imported. Your existing words were kept."
+            status = "\(count) quotes imported. Your existing words were kept. Moments are paused."
           } catch { store.error = error.localizedDescription }
         }
+        .alert("Margins", isPresented: Binding(
+          get: { !status.isEmpty },
+          set: { if !$0 { status = "" } }
+        )) {
+          Button("OK", role: .cancel) { status = "" }
+        } message: { Text(status) }
     }
   }
 }
