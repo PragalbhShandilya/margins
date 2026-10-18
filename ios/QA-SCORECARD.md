@@ -82,3 +82,7 @@ Tapping/advertised View action did not visibly open the app during native automa
 ## Backup export presentation repair
 
 Native Export collection previously opened a blank sheet on its first presentation. Replaced separate optional URL and Boolean presentation state with one identifiable URL payload, used for normal and recovery exports. Unsigned iPhone build succeeded. Rebuilt app in Xcode and verified the native share sheet showed Margins-collection, JSON, 862 bytes, Copy and Save to Files. Save to Files opened the local destination picker. End-to-end save/reimport is still pending, so backup stays 7/10. Simulator was stopped when the next session resumed; no claim of completed file save.
+
+## Files export follow-up, 18 October
+
+Restarted iPhone 18 Pro in Device Hub and reopened Margins. Export again displayed a populated 862-byte JSON share sheet. Save to Files → On My iPhone → Save returned to Settings. Import and merge backup opened Recents and visibly listed Margins-collection.json, 862 bytes, with the current timestamp: the file save is verified. Selecting it returned to Settings, but no success/error confirmation was visible in the inspected state. Import outcome and collection contents require follow-up; rating remains 7.
