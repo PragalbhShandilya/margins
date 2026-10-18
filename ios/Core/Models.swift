@@ -41,6 +41,10 @@ public struct Quote: Codable, Identifiable, Equatable, Sendable {
     self.createdAt = createdAt
   }
   public var byline: String { author.isEmpty ? "Unknown" : author }
+  public var shareText: String {
+    let attribution = [author, source].filter { !$0.isEmpty }.joined(separator: ", ")
+    return "“\(text)”" + (attribution.isEmpty ? "" : " — \(attribution)")
+  }
 }
 public enum AppIssue: LocalizedError {
   case message(String)

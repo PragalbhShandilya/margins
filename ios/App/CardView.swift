@@ -148,7 +148,7 @@ struct CardSheet: View {
           }.pickerStyle(.menu)
           Button("Share image", systemImage: "square.and.arrow.up") { showingShare = true }
             .buttonStyle(.borderedProminent)
-          ShareLink(item: "“\(quote.text)” — \(quote.byline)") {
+          ShareLink(item: quote.shareText) {
             Label("Share words", systemImage: "text.quote")
           }
         }.padding(24)

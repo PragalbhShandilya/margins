@@ -122,3 +122,7 @@ Library → Wilde Quote card used My photo/waterfall. Share image opened the nat
 ## Text-sharing export follow-up, 18 October
 
 Reopened Margins from the simulator Home Screen and selected Share words on Wilde’s photo card. Native text share sheet preview began with the expected quote. Save to Files opened the text destination picker; Save returned to the card. Full saved-text contents have not yet been inspected. On the next Home action, Device Hub reported that the Mac was locked and automatic unlock failed. No long-quote test was performed in this session. Sharing stays 7; resume by inspecting the saved text in Files and then creating a disposable long-quote fixture.
+
+## Shared-word attribution improvement, 18 October
+
+Revalidated Device Hub: Mac remains locked and automatic unlock failed. Independent source review found Share words omitted quote.source, losing book/film/family context. Added Quote.shareText and routed ShareLink through it: complete quote plus available author/source, no fabricated Unknown attribution when both are absent. Regression covers full attribution, author-only, source-only, absent attribution and an untruncated long Unicode/multiline quote. All 16 portable tests pass and unsigned iPhone build succeeds. Native updated-share payload and long-card rendering remain pending; sharing stays 7.

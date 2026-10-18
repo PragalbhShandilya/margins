@@ -169,4 +169,15 @@ extension CoreTests {
     XCTAssertEqual(try Data(contentsOf: oldPhoto), Data("old photo".utf8))
   }
 
+  func testSharedWordsPreserveTextAndAvailableAttribution() throws {
+    let book = try Quote(text: "Words worth keeping.", author: "A Reader", source: "Chapter 4", kind: .books)
+    XCTAssertEqual(book.shareText, "“Words worth keeping.” — A Reader, Chapter 4")
+    XCTAssertEqual(try Quote(text: "A line", source: "Family dinner").shareText, "“A line” — Family dinner")
+    XCTAssertEqual(try Quote(text: "A line", author: "Mum").shareText, "“A line” — Mum")
+    XCTAssertEqual(try Quote(text: "A line").shareText, "“A line”")
+    let longText = String(repeating: "é🌿\n", count: 500) + "THE END"
+    let long = try Quote(text: longText, author: "QA", source: "Long quote acceptance")
+    XCTAssertEqual(long.shareText, "“\(longText)” — QA, Long quote acceptance")
+  }
+
 }
