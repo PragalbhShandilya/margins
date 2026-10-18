@@ -142,4 +142,31 @@ extension CoreTests {
     state.quotes = [q, q]
     XCTAssertThrowsError(try state.validate())
   }
+  func testPhotoImportFailurePreservesPreviousCollectionAndPhoto() throws {
+    let folder = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+    try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+    defer { try? FileManager.default.removeItem(at: folder) }
+    let url = folder.appendingPathComponent("collection.json")
+    let oldPhoto = folder.appendingPathComponent("photo.jpg")
+    let original = CollectionState()
+    let originalData = try JSONEncoder().encode(original)
+    try originalData.write(to: url)
+    try Data("old photo".utf8).write(to: oldPhoto)
+    var incoming = original
+    incoming.quotes = [try Quote(text: "Restored quote")]
+    XCTAssertThrowsError(try CollectionPersistence.saveImport(incoming, photo: Data("new photo".utf8), to: url) { data, destination in
+      if destination == url { throw CocoaError(.fileWriteNoPermission) }
+      try data.write(to: destination, options: .atomic)
+    })
+    XCTAssertEqual(try Data(contentsOf: url), originalData)
+    XCTAssertEqual(try Data(contentsOf: oldPhoto), Data("old photo".utf8))
+    XCTAssertEqual(Set(try FileManager.default.contentsOfDirectory(atPath: folder.path)), ["collection.json", "photo.jpg"])
+    let saved = try CollectionPersistence.saveImport(incoming, photo: Data("new photo".utf8), to: url)
+    let loaded = try JSONDecoder().decode(CollectionState.self, from: Data(contentsOf: url))
+    XCTAssertEqual(loaded.photoFilename, saved.photoFilename)
+    XCTAssertEqual(loaded.quotes.first?.text, "Restored quote")
+    XCTAssertEqual(try Data(contentsOf: folder.appendingPathComponent(try XCTUnwrap(loaded.photoFilename))), Data("new photo".utf8))
+    XCTAssertEqual(try Data(contentsOf: oldPhoto), Data("old photo".utf8))
+  }
+
 }

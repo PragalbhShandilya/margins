@@ -87,11 +87,18 @@ public struct CollectionState: Codable, Equatable, Sendable {
   public var followedChannels: Set<String> = []
   public var displayName = "A reader"
   public var bio = ""
+  public var photoFilename: String?
   public var reminders = ReminderPreferences()
   public init() {}
   public func validate() throws {
     guard version == 1, quotes.count <= 5000, Set(quotes.map(\.id)).count == quotes.count else {
       throw AppIssue.message("This collection has an unsupported or duplicate format.")
+    }
+    if let photoFilename {
+      guard photoFilename.hasPrefix("photo-"), photoFilename.hasSuffix(".jpg"),
+        !photoFilename.contains("/"), !photoFilename.contains("..") else {
+        throw AppIssue.message("This collection has an invalid photo reference.")
+      }
     }
     for q in quotes {
       _ = try Quote(id: q.id, text: q.text, author: q.author, source: q.source, kind: q.kind)
@@ -293,5 +300,33 @@ public enum CollectionTransfer {
     state.bio = web.profile?.bio ?? ""
     try state.validate()
     return PortableBackup(collection: state)
+  }
+}
+
+// A collection references a newly written immutable photo only after its atomic save succeeds.
+// Failure leaves the previous collection and its photo untouched.
+public enum CollectionPersistence {
+  public static func saveImport(
+    _ collection: CollectionState, photo: Data?, to url: URL,
+    write: (Data, URL) throws -> Void = { try $0.write(to: $1, options: .atomic) }
+  ) throws -> CollectionState {
+    var copy = collection
+    var stagedPhoto: URL?
+    do {
+      if let photo {
+        let filename = "photo-\(UUID().uuidString).jpg"
+        let photoURL = url.deletingLastPathComponent().appendingPathComponent(filename)
+        stagedPhoto = photoURL
+        try write(photo, photoURL)
+        copy.photoFilename = filename
+        copy.reminders.mood = .photo
+      }
+      try copy.validate()
+      try write(JSONEncoder().encode(copy), url)
+      return copy
+    } catch {
+      if let stagedPhoto { try? FileManager.default.removeItem(at: stagedPhoto) }
+      throw error
+    }
   }
 }

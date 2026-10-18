@@ -31,7 +31,7 @@ import UserNotifications
     }
   }
   var collectionURL: URL { folder.appending(path: "collection.json") }
-  var photoURL: URL { folder.appending(path: "photo.jpg") }
+  var photoURL: URL { folder.appending(path: state.photoFilename ?? "photo.jpg") }
   var photo: UIImage? { UIImage(contentsOfFile: photoURL.path) }
   func commit(_ change: (inout CollectionState) throws -> Void) throws {
     guard !quarantine else {
@@ -99,7 +99,7 @@ import UserNotifications
     }
     refreshIfNeeded()
   }
-  func savePhoto(_ data: Data) throws {
+  private func preparedPhoto(_ data: Data) throws -> Data {
     guard data.count <= 15_000_000, let original = UIImage(data: data) else {
       throw AppIssue.message("Choose a JPEG, PNG, or HEIC photo under 15 MB.")
     }
@@ -111,7 +111,10 @@ import UserNotifications
     guard let compressed = image.jpegData(compressionQuality: 0.8) else {
       throw AppIssue.message("This photo could not be read.")
     }
-    try compressed.write(
+    return compressed
+  }
+  func savePhoto(_ data: Data) throws {
+    try preparedPhoto(data).write(
       to: photoURL, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
     objectWillChange.send()
   }
@@ -142,13 +145,10 @@ import UserNotifications
     // Restoring a backup never enables reminders without a fresh permission check.
     copy.reminders.enabled = false
     copy.reminders.plannedUntil = nil
-    if let image = backup.photo {
-      try savePhoto(image)
-      copy.reminders.mood = .photo
+    let photo = try backup.photo.map { try preparedPhoto($0) }
+    copy = try CollectionPersistence.saveImport(copy, photo: photo, to: collectionURL) {
+      try $0.write(to: $1, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
     }
-    let encoded = try JSONEncoder().encode(copy)
-    try encoded.write(
-      to: collectionURL, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
     quarantine = false
     state = copy
     Task { await pause() }
