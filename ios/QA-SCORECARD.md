@@ -15,7 +15,7 @@
 | Image/text sharing | 5 | Native share implementation; actual export/share acceptance pending. |
 | Random moments / quiet hours | 7 | Frequency 3 saved while paused; native permission Allow then enabled Save reported 60 scheduled requests through 5 November. Pause disabled the switch and retained design. Missing single-quote selection rejected. 14 core tests cover quiet hours and DST conversion; app-closed delivery/denial and updated picker acceptance pending. |
 | App-closed notifications / tap routing | 7 | Actual random notification delivered to simulator Notification Center while Margins was off-screen. Wilde text/author matched a saved quote; pending count fell 60 to 59 on return. Pause restored off state. Tap routing and real physical-device acceptance remain pending. |
-| Backup / merge / web migration | 7 | Core roundtrip, merge, malformed input and web migration tests pass; file-picker/export runtime pending. |
+| Backup / merge / web migration | 7 | Core roundtrip, merge, malformed input and web migration tests pass. Fixed blank export sheet and verified JSON share sheet; completed Files save/import acceptance pending. |
 | Persistence / corruption recovery | 6 | Edited quote, attribution and favorite survived a rebuilt app relaunch. Corruption/recovery runtime pending. |
 | Accounts / sign-in / Keychain | 4 | Client prepared; hosted service and runtime account/Keychain checks deferred by owner. |
 | Following readers / shared feed | 4 | Client prepared; two-account hosted acceptance deferred by owner. |
@@ -78,3 +78,7 @@ Selected One special quote with no specific quote, enabled and saved: visible al
 Configured three daily moments with My library, Forest and a valid 06:19–20:23 local window at approximately 20:20. Scheduling completed with 60 requests. Sent Margins to background via simulator Home and verified Home Screen. After cutoff, Notification Center showed a Margins alert “A moment from Margins” with Wilde’s saved quote and author, timestamp approximately 20:22 (within the chosen window). No banner was observed, so only Notification Center arrival is claimed.
 
 Tapping/advertised View action did not visibly open the app during native automation; routing remains unverified, not classified as an app defect yet. Reopened Margins through Spotlight; app reported 59 pending moments, consistent with one delivered request. Paused reminders again and verified switch off/status paused. Background notifications/routing score raised from 5 to 7. Physical iPhone delivery, expanded image, tap routing and denial recovery still required for full acceptance. Native picker AX setValue did not alter selection; direct wheel row clicks worked, and final values were verified before saving.
+
+## Backup export presentation repair
+
+Native Export collection previously opened a blank sheet on its first presentation. Replaced separate optional URL and Boolean presentation state with one identifiable URL payload, used for normal and recovery exports. Unsigned iPhone build succeeded. Rebuilt app in Xcode and verified the native share sheet showed Margins-collection, JSON, 862 bytes, Copy and Save to Files. Save to Files opened the local destination picker. End-to-end save/reimport is still pending, so backup stays 7/10. Simulator was stopped when the next session resumed; no claim of completed file save.

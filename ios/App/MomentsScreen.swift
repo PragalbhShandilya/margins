@@ -167,6 +167,10 @@ struct PeopleScreen: View {
     }.padding(18).background(.white, in: RoundedRectangle(cornerRadius: 12))
   }
 }
+private struct BackupShare: Identifiable {
+  let id = UUID()
+  let url: URL
+}
 struct SettingsScreen: View {
   @EnvironmentObject var store: LibraryStore
   @EnvironmentObject var community: Community
@@ -176,8 +180,7 @@ struct SettingsScreen: View {
   @ViewState<String> private var address: String = ""
   @ViewState<String> private var username: String = ""
   @ViewState<String> private var password: String = ""
-  @ViewState<URL?> private var shareURL: URL?
-  @ViewState<Bool> private var showShare: Bool = false
+  @ViewState<BackupShare?> private var backupShare: BackupShare?
   @ViewState<Bool> private var importing: Bool = false
   @ViewState<String> private var status: String = ""
   var body: some View {
@@ -202,15 +205,13 @@ struct SettingsScreen: View {
         Section {
           Button("Export collection") {
             do {
-              shareURL = try store.exportURL()
-              showShare = true
+              backupShare = BackupShare(url: try store.exportURL())
             } catch { store.error = error.localizedDescription }
           }
           Button("Import and merge backup") { importing = true }
           Button("Export original recovery file") {
             do {
-              shareURL = try store.exportURL(recovery: true)
-              showShare = true
+              backupShare = BackupShare(url: try store.exportURL(recovery: true))
             } catch { store.error = error.localizedDescription }
           }
           Text(
@@ -267,7 +268,7 @@ struct SettingsScreen: View {
         name = store.state.displayName
         bio = store.state.bio
         address = community.address
-      }.sheet(isPresented: $showShare) { if let shareURL { ShareSheet(items: [shareURL]) } }
+      }.sheet(item: $backupShare) { ShareSheet(items: [$0.url]) }
         .fileImporter(isPresented: $importing, allowedContentTypes: [.json]) { result in
           do {
             let count = try store.importBackup(result.get())
