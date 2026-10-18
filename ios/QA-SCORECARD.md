@@ -118,3 +118,7 @@ Moved decorative image/gradient layers into a GeometryReader background behind t
 ## Image export end-to-end acceptance, 18 October
 
 Library → Wilde Quote card used My photo/waterfall. Share image opened the native activity sheet. Save to Files → On My iPhone → Save completed. Opened the simulator Files app: Recents listed PNG image, 2.7 MB. Opened it in the image preview: complete quote, Oscar Wilde, waterfall, margins and Books were visible without clipping. Info confirmed PNG image.png, 1080 × 1350 pixels, normal orientation and sRGB. This is saved-file/rendered-output evidence, not just a thumbnail or compile result. No recipient was messaged. Sharing rises from 5 to 7 pending Share words and long-quote export acceptance. The current simulator foreground is Files image Info.
+
+## Text-sharing export follow-up, 18 October
+
+Reopened Margins from the simulator Home Screen and selected Share words on Wilde’s photo card. Native text share sheet preview began with the expected quote. Save to Files opened the text destination picker; Save returned to the card. Full saved-text contents have not yet been inspected. On the next Home action, Device Hub reported that the Mac was locked and automatic unlock failed. No long-quote test was performed in this session. Sharing stays 7; resume by inspecting the saved text in Files and then creating a disposable long-quote fixture.
