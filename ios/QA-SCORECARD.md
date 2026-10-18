@@ -130,3 +130,9 @@ Revalidated Device Hub: Mac remains locked and automatic unlock failed. Independ
 ## Image-render failure handling, 18 October
 
 Source review found CardRenderer silently returned UIImage() when ImageRenderer failed. Replaced the empty-image fallback with a thrown user-readable error and a positive-dimension guard. CardSheet renders before presenting and carries the successful image in an identifiable payload; failure displays a local alert instead of an empty share. Reminder request construction propagates the error before pending requests are removed. Unsigned iPhone build succeeds. No actual render failure was reproduced; this is failure-path source hardening with build evidence, not runtime failure acceptance. Sharing stays 7 and current image/text/long-quote visual acceptance remains pending while Mac access is locked.
+
+## Long-quote export sizing preparation, 18 October
+
+Reviewed fixed 540 × 675-point export frame against the accepted 2,000-character limit and arbitrary line breaks. Changed renderer to a 540-point fixed width with natural vertical sizing and 675-point minimum height inside QuoteCard. Short exports retain the standard minimum; longer content can expand rather than being constrained to a fixed export height. Unsigned iPhone build succeeded. Updated rendered-file acceptance is still required; no long-export success is claimed.
+
+Device Hub became available again. Created a disposable native book quote with QA LONG START, 25 repetitions of “Every word should remain visible when a card is shared. ” and QA LONG END (1,400 characters including markers/newlines). The input call timed out, but subsequent AX inspection verified the complete input including end marker; Keep saved and Library count became four. Optional attribution was omitted. Fixture remains for rebuilt export inspection. Current simulator app predates this sizing change and the latest share/error improvements; run current Xcode source before acceptance.

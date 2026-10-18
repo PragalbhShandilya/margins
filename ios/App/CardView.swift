@@ -15,6 +15,7 @@ struct QuoteCard: View {
   var mood: CardMood = .forest
   var photo: UIImage?
   var compact = false
+  var minimumHeight: CGFloat? = nil
   private var colors: [Color] {
     switch mood {
     case .forest:
@@ -46,7 +47,7 @@ struct QuoteCard: View {
           Text(quote.kind.rawValue).font(.caption).opacity(0.65)
         }
       }.padding(28).foregroundStyle(.white)
-      .frame(maxWidth: .infinity).frame(minHeight: compact ? 300 : 360)
+      .frame(maxWidth: .infinity).frame(minHeight: minimumHeight ?? (compact ? 300 : 360))
       .background {
         GeometryReader { geometry in
           ZStack {
@@ -72,7 +73,8 @@ struct QuoteCard: View {
 @MainActor enum CardRenderer {
   static func image(quote: Quote, mood: CardMood, photo: UIImage?) throws -> UIImage {
     let renderer = ImageRenderer(
-      content: QuoteCard(quote: quote, mood: mood, photo: photo).frame(width: 540, height: 675)
+      content: QuoteCard(quote: quote, mood: mood, photo: photo, minimumHeight: 675)
+        .frame(width: 540).fixedSize(horizontal: false, vertical: true)
         .environment(\.colorScheme, .light))
     renderer.scale = 2
     guard let image = renderer.uiImage, image.size.width > 0, image.size.height > 0 else {
