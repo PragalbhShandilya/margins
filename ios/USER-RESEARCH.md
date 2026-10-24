@@ -20,4 +20,6 @@ Tags/collections, a native share extension for capture, Home/Lock Screen widgets
 
 ## Verification
 
-Regression added for CSV roundtrip, multiline/quoted Unicode content, optional attribution, duplicate merge, malformed rows, invalid kind/missing text header and Markdown line preservation. All 17 portable tests pass; unsigned iPhone build succeeds. Focused compiled CSV roundtrip/duplicate check also passes. Native file-picker/export acceptance pending. New migration formats provisionally 6/10.
+Regression added for CSV roundtrip, multiline/quoted Unicode content, optional attribution, duplicate merge, malformed rows, invalid kind/missing text header and Markdown line preservation. All 18 portable tests pass; unsigned iPhone build succeeds. Focused compiled CSV roundtrip/duplicate check also passes. Native file-picker/export acceptance pending. New migration formats provisionally 6/10.
+
+CSV integrity follow-up, 24 October: reject invalid UTF-8 instead of silently replacing bytes, preserve original CRLF/CR inside quoted text, and accept a BOM before a quoted header. Regression tests pass; unsigned iPhone build succeeds. Native file-picker acceptance remains pending.

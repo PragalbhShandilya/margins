@@ -196,4 +196,14 @@ extension CoreTests {
     XCTAssertTrue(QuoteExchange.markdown(original).contains("> A new line 🌿"))
   }
 
+  func testCSVPreservesQuotedLineEndingsAndRejectsDamagedEncoding() throws {
+    var original = CollectionState()
+    original.quotes = [try Quote(text: "First\r\nSecond\rThird", author: "QA")]
+    let csv = QuoteExchange.csv(original)
+    let decoded = try QuoteExchange.decodeCSVData(Data(("\u{FEFF}" + csv).utf8))
+    XCTAssertEqual(decoded.quotes.first?.text, original.quotes.first?.text)
+    XCTAssertEqual(try QuoteExchange.decodeCSV("\u{FEFF}\"quote\"\r\n\"A line\"").quotes.first?.text, "A line")
+    XCTAssertThrowsError(try QuoteExchange.decodeCSVData(Data([0xFF, 0xFE, 0x41])))
+  }
+
 }

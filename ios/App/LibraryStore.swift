@@ -141,7 +141,7 @@ import UserNotifications
     let data = try Data(contentsOf: url)
     guard data.count < 20_000_000 else { throw AppIssue.message("Choose a backup under 20 MB.") }
     let backup = try url.pathExtension.lowercased() == "csv"
-      ? PortableBackup(collection: QuoteExchange.decodeCSV(String(decoding: data, as: UTF8.self)))
+      ? PortableBackup(collection: QuoteExchange.decodeCSVData(data))
       : CollectionTransfer.decode(data)
     try backup.collection.validate()
     var copy = state

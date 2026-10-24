@@ -350,10 +350,16 @@ public enum QuoteExchange {
         + "\n\n" + [$0.author, $0.source].filter { !$0.isEmpty }.joined(separator: " — ")
     }.joined(separator: "\n\n---\n\n") + "\n"
   }
+  public static func decodeCSVData(_ data: Data) throws -> CollectionState {
+    guard let text = String(data: data, encoding: .utf8) else {
+      throw AppIssue.message("This CSV is not valid UTF-8. Export it as UTF-8 CSV and try again.")
+    }
+    return try decodeCSV(text)
+  }
   public static func decodeCSV(_ text: String) throws -> CollectionState {
     var rows: [[String]] = [], row: [String] = [], field = ""
     var quoted = false, closed = false
-    let chars = Array(text.replacingOccurrences(of: "\r\n", with: "\n").replacingOccurrences(of: "\r", with: "\n"))
+    let chars = Array(text.hasPrefix("\u{FEFF}") ? String(text.dropFirst()) : text)
     var i = 0
     while i < chars.count {
       let c = chars[i]
@@ -362,9 +368,9 @@ public enum QuoteExchange {
           if i + 1 < chars.count && chars[i + 1] == "\"" { field.append("\""); i += 1 }
           else { quoted = false; closed = true }
         } else { field.append(c) }
-      } else if c == "," || c == "\n" {
+      } else if c == "," || c == "\n" || c == "\r" || c == "\r\n" {
         row.append(field); field = ""; closed = false
-        if c == "\n" { rows.append(row); row = [] }
+        if c != "," { rows.append(row); row = [] }
       } else if c == "\"" && field.isEmpty && !closed { quoted = true }
       else {
         guard !closed && c != "\"" else { throw AppIssue.message("This CSV has malformed quotation marks.") }

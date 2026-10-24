@@ -16,7 +16,7 @@
 | Random moments / quiet hours | 7 | Frequency 3 saved while paused; native permission Allow then enabled Save reported 60 scheduled requests through 5 November. Pause disabled the switch and retained design. Missing single-quote selection rejected. 14 core tests cover quiet hours and DST conversion; app-closed delivery/denial and updated picker acceptance pending. |
 | App-closed notifications / tap routing | 7 | Actual random notification delivered to simulator Notification Center while Margins was off-screen. Wilde text/author matched a saved quote; pending count fell 60 to 59 on return. Pause restored off state. Tap routing and real physical-device acceptance remain pending. |
 | Backup / merge / web migration | 8 | Native Files export/import, duplicate merge, missing-quote restore and photo replacement roundtrip pass. Failed collection-write regression preserves prior data; web migration core tests pass. |
-| CSV migration / Markdown export | 6 | Research-led addition: 17 core tests and iPhone build pass; native CSV/Markdown file-picker acceptance pending. |
+| CSV migration / Markdown export | 6 | Research-led addition: 18 core tests and iPhone build pass; native CSV/Markdown file-picker acceptance pending. |
 | Persistence / corruption recovery | 6 | Edited quote, attribution and favorite survived a rebuilt app relaunch. Corruption/recovery runtime pending. |
 | Accounts / sign-in / Keychain | 4 | Client prepared; hosted service and runtime account/Keychain checks deferred by owner. |
 | Following readers / shared feed | 4 | Client prepared; two-account hosted acceptance deferred by owner. |
@@ -148,4 +148,8 @@ On the rebuilt app opened Wilde’s card → Share words → Save to Files. Name
 
 ## Research-led portability additions, 24 October
 
-See USER-RESEARCH.md for public feedback and scope. Added native CSV import/export and readable Markdown export, with optional attribution and strict parsing before merge/persistence. All 17 core tests pass; unsigned iPhone build succeeds. Runtime file-picker checks remain pending; new formats score 6, separate from the verified JSON/photo backup score.
+See USER-RESEARCH.md for public feedback and scope. Added native CSV import/export and readable Markdown export, with optional attribution and strict parsing before merge/persistence. All 18 core tests pass; unsigned iPhone build succeeds. Runtime file-picker checks remain pending; new formats score 6, separate from the verified JSON/photo backup score.
+
+## CSV integrity follow-up, 24 October
+
+Strict UTF-8 decoding rejects damaged/unsupported encoding before import. Quoted line endings are preserved and BOM-prefixed quoted headers are accepted. All 18 core tests pass and the unsigned iPhone build succeeds. CSV/Markdown remains 6 pending native file-picker acceptance.
