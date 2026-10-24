@@ -16,6 +16,7 @@
 | Random moments / quiet hours | 7 | Frequency 3 saved while paused; native permission Allow then enabled Save reported 60 scheduled requests through 5 November. Pause disabled the switch and retained design. Missing single-quote selection rejected. 14 core tests cover quiet hours and DST conversion; app-closed delivery/denial and updated picker acceptance pending. |
 | App-closed notifications / tap routing | 7 | Actual random notification delivered to simulator Notification Center while Margins was off-screen. Wilde text/author matched a saved quote; pending count fell 60 to 59 on return. Pause restored off state. Tap routing and real physical-device acceptance remain pending. |
 | Backup / merge / web migration | 8 | Native Files export/import, duplicate merge, missing-quote restore and photo replacement roundtrip pass. Failed collection-write regression preserves prior data; web migration core tests pass. |
+| CSV migration / Markdown export | 6 | Research-led addition: 17 core tests and iPhone build pass; native CSV/Markdown file-picker acceptance pending. |
 | Persistence / corruption recovery | 6 | Edited quote, attribution and favorite survived a rebuilt app relaunch. Corruption/recovery runtime pending. |
 | Accounts / sign-in / Keychain | 4 | Client prepared; hosted service and runtime account/Keychain checks deferred by owner. |
 | Following readers / shared feed | 4 | Client prepared; two-account hosted acceptance deferred by owner. |
@@ -144,3 +145,7 @@ Ran latest Xcode source on iPhone 18 Pro, retaining the long fixture after app r
 ## Updated text-sharing acceptance completed, 18 October
 
 On the rebuilt app opened Wilde’s card → Share words → Save to Files. Named export Margins-attribution to retain the earlier comparison file. Save returned to card. Opened Files, dismissed the previous long-image Quick Look and located Margins-attribution.txt, 89 bytes. Advertised Quick Look displayed the full expected text: quote, Oscar Wilde, and Lady Windermere’s Fan. No message was sent to a recipient. Combined with inspected regular/long PNG exports and tested optional/Unicode text formatting, image/text sharing reaches 8/10. Simulator foreground is Files Quick Look for Margins-attribution.
+
+## Research-led portability additions, 24 October
+
+See USER-RESEARCH.md for public feedback and scope. Added native CSV import/export and readable Markdown export, with optional attribution and strict parsing before merge/persistence. All 17 core tests pass; unsigned iPhone build succeeds. Runtime file-picker checks remain pending; new formats score 6, separate from the verified JSON/photo backup score.

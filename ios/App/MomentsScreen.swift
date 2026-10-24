@@ -208,7 +208,17 @@ struct SettingsScreen: View {
               backupShare = BackupShare(url: try store.exportURL())
             } catch { store.error = error.localizedDescription }
           }
-          Button("Import and merge backup") { importing = true }
+          Button("Export quotes as CSV") {
+            do { backupShare = BackupShare(url: try store.exportText(markdown: false)) }
+            catch { store.error = error.localizedDescription }
+          }
+          Button("Export quotes as Markdown") {
+            do { backupShare = BackupShare(url: try store.exportText(markdown: true)) }
+            catch { store.error = error.localizedDescription }
+          }
+          Button("Import backup or CSV") { importing = true }
+          Text("CSV: text or quote column; optional author, source, kind. Kind: Books, Movies, or From life. Imports merge without deleting your quotes.")
+            .font(.caption).foregroundStyle(.secondary)
           Button("Export original recovery file") {
             do {
               backupShare = BackupShare(url: try store.exportURL(recovery: true))
@@ -268,7 +278,7 @@ struct SettingsScreen: View {
         bio = store.state.bio
         address = community.address
       }.sheet(item: $backupShare) { ShareSheet(items: [$0.url]) }
-        .fileImporter(isPresented: $importing, allowedContentTypes: [.json]) { result in
+        .fileImporter(isPresented: $importing, allowedContentTypes: [.json, .commaSeparatedText]) { result in
           do {
             let count = try store.importBackup(result.get())
             status = "\(count) \(count == 1 ? "quote" : "quotes") imported. Your existing words were kept. Moments are paused."

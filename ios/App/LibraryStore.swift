@@ -129,12 +129,20 @@ import UserNotifications
     }
     return url
   }
+  func exportText(markdown: Bool) throws -> URL {
+    let url = FileManager.default.temporaryDirectory.appending(path: markdown ? "Margins-quotes.md" : "Margins-quotes.csv")
+    let text = markdown ? QuoteExchange.markdown(state) : QuoteExchange.csv(state)
+    try Data(text.utf8).write(to: url, options: .atomic)
+    return url
+  }
   func importBackup(_ url: URL) throws -> Int {
     let access = url.startAccessingSecurityScopedResource()
     defer { if access { url.stopAccessingSecurityScopedResource() } }
     let data = try Data(contentsOf: url)
     guard data.count < 20_000_000 else { throw AppIssue.message("Choose a backup under 20 MB.") }
-    let backup = try CollectionTransfer.decode(data)
+    let backup = try url.pathExtension.lowercased() == "csv"
+      ? PortableBackup(collection: QuoteExchange.decodeCSV(String(decoding: data, as: UTF8.self)))
+      : CollectionTransfer.decode(data)
     try backup.collection.validate()
     var copy = state
     let count = try copy.merge(backup.collection)

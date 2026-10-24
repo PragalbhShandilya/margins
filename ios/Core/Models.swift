@@ -334,3 +334,60 @@ public enum CollectionPersistence {
     }
   }
 }
+
+public enum QuoteExchange {
+  private static func cell(_ value: String) -> String {
+    "\"" + value.replacingOccurrences(of: "\"", with: "\"\"") + "\""
+  }
+  public static func csv(_ collection: CollectionState) -> String {
+    (["text,author,source,kind"] + collection.quotes.map {
+      [$0.text, $0.author, $0.source, $0.kind.rawValue].map(cell).joined(separator: ",")
+    }).joined(separator: "\r\n")
+  }
+  public static func markdown(_ collection: CollectionState) -> String {
+    "# My Margins\n\n" + collection.quotes.map {
+      $0.text.components(separatedBy: .newlines).map { "> " + $0 }.joined(separator: "\n")
+        + "\n\n" + [$0.author, $0.source].filter { !$0.isEmpty }.joined(separator: " — ")
+    }.joined(separator: "\n\n---\n\n") + "\n"
+  }
+  public static func decodeCSV(_ text: String) throws -> CollectionState {
+    var rows: [[String]] = [], row: [String] = [], field = ""
+    var quoted = false, closed = false
+    let chars = Array(text.replacingOccurrences(of: "\r\n", with: "\n").replacingOccurrences(of: "\r", with: "\n"))
+    var i = 0
+    while i < chars.count {
+      let c = chars[i]
+      if quoted {
+        if c == "\"" {
+          if i + 1 < chars.count && chars[i + 1] == "\"" { field.append("\""); i += 1 }
+          else { quoted = false; closed = true }
+        } else { field.append(c) }
+      } else if c == "," || c == "\n" {
+        row.append(field); field = ""; closed = false
+        if c == "\n" { rows.append(row); row = [] }
+      } else if c == "\"" && field.isEmpty && !closed { quoted = true }
+      else {
+        guard !closed && c != "\"" else { throw AppIssue.message("This CSV has malformed quotation marks.") }
+        field.append(c)
+      }
+      i += 1
+    }
+    guard !quoted else { throw AppIssue.message("This CSV has an unfinished quoted field.") }
+    if !field.isEmpty || !row.isEmpty || closed { row.append(field); rows.append(row) }
+    guard let header = rows.first else { throw AppIssue.message("This CSV is empty.") }
+    let names = header.map { $0.replacingOccurrences(of: "\u{FEFF}", with: "").trimmingCharacters(in: .whitespaces).lowercased() }
+    guard Set(names).count == names.count, let textIndex = names.firstIndex(of: "text") ?? names.firstIndex(of: "quote") else {
+      throw AppIssue.message("CSV needs a text or quote column. Optional columns: author, source, kind.")
+    }
+    var result = CollectionState()
+    for (offset, values) in rows.dropFirst().enumerated() where values.contains(where: { !$0.isEmpty }) {
+      guard values.count == names.count else { throw AppIssue.message("CSV row \(offset + 2) has the wrong number of columns.") }
+      func value(_ key: String) -> String { names.firstIndex(of: key).map { values[$0] } ?? "" }
+      let category = value("kind")
+      guard category.isEmpty || QuoteKind(rawValue: category) != nil else { throw AppIssue.message("CSV row \(offset + 2) has an unknown kind. Use Books, Movies, or From life.") }
+      result.quotes.append(try Quote(text: values[textIndex], author: value("author"), source: value("source"), kind: QuoteKind(rawValue: category) ?? .life))
+    }
+    try result.validate()
+    return result
+  }
+}

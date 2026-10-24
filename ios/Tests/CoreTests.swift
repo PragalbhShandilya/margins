@@ -180,4 +180,20 @@ extension CoreTests {
     XCTAssertEqual(long.shareText, "“\(longText)” — QA, Long quote acceptance")
   }
 
+  func testCSVExchangeAndMigrationValidation() throws {
+    var original = CollectionState()
+    original.quotes = [try Quote(text: "One, two \"words\"\nA new line 🌿", author: "Mum", source: "Dinner, home", kind: .life)]
+    let imported = try QuoteExchange.decodeCSV(QuoteExchange.csv(original))
+    XCTAssertEqual(imported.quotes.first?.text, original.quotes.first?.text)
+    XCTAssertEqual(imported.quotes.first?.source, "Dinner, home")
+    var existing = original
+    XCTAssertEqual(try existing.merge(imported), 0)
+    XCTAssertEqual(try QuoteExchange.decodeCSV("quote\nA line").quotes.first?.author, "")
+    XCTAssertThrowsError(try QuoteExchange.decodeCSV("text,author\nA,B,C"))
+    XCTAssertThrowsError(try QuoteExchange.decodeCSV("text\n\"unfinished"))
+    XCTAssertThrowsError(try QuoteExchange.decodeCSV("text,kind\nA,Other"))
+    XCTAssertThrowsError(try QuoteExchange.decodeCSV("author\nMum"))
+    XCTAssertTrue(QuoteExchange.markdown(original).contains("> A new line 🌿"))
+  }
+
 }
