@@ -153,3 +153,7 @@ See USER-RESEARCH.md for public feedback and scope. Added native CSV import/expo
 ## CSV integrity follow-up, 24 October
 
 Strict UTF-8 decoding rejects damaged/unsupported encoding before import. Quoted line endings are preserved and BOM-prefixed quoted headers are accepted. All 18 core tests pass and the unsigned iPhone build succeeds. CSV/Markdown remains 6 pending native file-picker acceptance.
+
+## Native CSV save acceptance, 24 October
+
+Opened the authoritative Documents/Codex/Margins/ios project in Xcode and ran the current source on iPhone 18 Pro. Settings visibly includes CSV/Markdown export and Import backup or CSV. CSV export opened a populated native share sheet named Margins-quotes.csv. Save to Files → On My iPhone → Save returned to Settings. Import opened Recents and visibly listed Margins-quotes, CSV, 2 KB, current timestamp, proving the save. Selection attempts then failed with Device Hub noWindowsAvailable despite successful screenshots, including after reselecting/raising the simulator window. No import success or failure was observed. CSV/Markdown stays 6 pending import and Markdown runtime acceptance.
